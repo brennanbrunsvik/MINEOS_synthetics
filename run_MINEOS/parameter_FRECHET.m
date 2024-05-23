@@ -2,6 +2,7 @@
 
 %clear all;
 addpath('./functions'); % Path to matlab unctions
+addpath('./functions_additional'); % More functions. These replace export_fig and save2pdf. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
 path2runMINEOS = './'; % Path to this folder
 path2BIN = '../FORTRAN/bin'; % Path to fortran binaries
 

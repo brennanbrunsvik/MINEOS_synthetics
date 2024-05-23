@@ -24,7 +24,11 @@ frechet_ACFLN_love    get_eigfxn_grvelo     mineos_strip
 frechet_Q             get_eigfxn_grvelo_int mineos_table
 frechet_cv            idagrn6_excite        plot_wk
 
-
+There are three files that can run make for you: makeall_linux.sh, 
+makeall_M2chip.sh, and makeall.sh. With an Intel Mac Sonoma 14.4.1,
+I (Brennan Brunsvik) actually had to use makeall_M2chip.sh. The normal 
+makeall.sh resulted in plot_wk giving a memory reference error, even though
+I do not have an M chip.  
 
 ----- STEP 3 ----- *
 The bin folder containing the fortran executables must be added to your 
@@ -35,3 +39,6 @@ export PATH="path/to/bin:$PATH"
 *(This should be done automatically in the MATLAB script now, but I would 
 still recommend this step anyway)
 
+----- Additional steps -----
+You should have brewermap for some of the plots to work. This is added 
+to the path in a2_mk_kernels.m. 

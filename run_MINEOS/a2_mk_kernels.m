@@ -13,6 +13,7 @@
 
 
 clear; close all;
+addpath('~/MATLAB/DrosteEffect-BrewerMap-3.2.5.0/'); % NEED TO CHANGE THIS PATH WHEN GETTING THIS GOING ON YOUR MACHINE
 
 parameter_FRECHET;
 branch = 0; % Fundamental -> 0
@@ -141,6 +142,7 @@ if ( TYPE == 'S')
         set(gcf,'position',[112   169   830   532]);
         clf
          CC=lines(length(periods));
+         
          CC = flip(brewermap(length(periods),'Spectral'));
          %CC=copper(length(periods));
             ax1 = subplot(1,3,1);
