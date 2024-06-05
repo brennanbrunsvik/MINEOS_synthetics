@@ -29,7 +29,7 @@ elseif strcmp(TYPE,'T') == 1
     MODETYPE = 2;
 end
 fid = fopen(MODEOUT,'w');
-fprintf(fid,'1.d-12  1.d-12  1.d-12 .126\n');
+fprintf(fid,'1.d-12  1.d-12  1.d-12 .126\n'); % brb20240605 playing with this. I think this line in mineos bran: eps,eps1,eps2,wgrav, and       eps1=eps eps2=eps. I think 1.d-10 is quicker. 
 fprintf(fid,'%d\n',MODETYPE);
 fprintf(fid,'%d %d %.2f %.2f %d\n',[l_start maxL minF+0.05 maxF+0.05 N_modes]);
 fprintf(fid,'0\n');

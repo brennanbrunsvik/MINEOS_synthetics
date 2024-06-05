@@ -1,19 +1,19 @@
 %% Setup Parameters for running MINEOS to calculate senstivity kernels, dispersion, and synthetics
 
-%clear all;
-addpath('./functions'); % Path to matlab unctions
-addpath('./functions_additional'); % More functions. These replace export_fig and save2pdf. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
+% clear all;
+addpath('/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions'); % Path to matlab unctions
+addpath('/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions_additional'); % More functions. These replace export_fig and save2pdf. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
 path2runMINEOS = './'; % Path to this folder
-path2BIN = '../FORTRAN/bin'; % Path to fortran binaries
+path2BIN = '/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin'; % Path to fortran binaries
 
 % Mineos table parameters
-maxN = 400000; % Estimate of max number of modes
+maxN = 400000; % Estimate of max number of modes 
 minF = 0;
 maxF = 200.05; % max frequency in mHz; %10.1; %250.05; %333.4; %500.05; %200.05; %%150.05; %50.05;
 minL = 0;
 maxL = 50000;
 N_modes = 2; % <0 uses all mode branches, 1=fundamental only -------- JOSH 8/22/15
-param.CARDID = 'prem_35'; %'fail_H01221_90L'; %'prem_35'; %'Nomelt_taper_aniso_constxicrman_etaPREM_constxilays'; %'pa5_5km';
+param.CARDID = 'synthmod'; % 'synthmod'; % 'prem_35'; %'fail_H01221_90L'; %'prem_35'; %'Nomelt_taper_aniso_constxicrman_etaPREM_constxilays'; %'pa5_5km';
 
 % (1 => yes, 0 => no)
 SONLY = 1; %Spheroidal modes? (RAYLEIGH)
@@ -23,6 +23,17 @@ TONLY = 0; %Toroidal modes? (LOVE)
 param.periods = round(logspace(log10(5),log10(200),15));
 
 ch_mode = 0; % (DO NOT CHANGE) mode branch to check for missed eigenfrequencies 0 => T0 ------- JOSH 10/7/15
+
+%% brb20240605 Trying to convert to function
+% param.maxN = maxN; 
+% param.minF = minF; 
+% param.maxF = maxF; 
+% param.minL = minL; 
+% param.maxL = maxL; 
+% param.N_modes = N_modes; 
+% param.SONLY = SONLY; 
+% param.TONLY = TONLY; 
+% param.ch_mode = ch_mode; 
 
 %% Parameters for idagrn synthetics
 param.COMP = 'Z'; % 'Z:vertical'; 'R:radial'; 'T:tangential'; Component
@@ -64,6 +75,7 @@ param.RUNPATH = pwd;
 
 %% create dir for output MINEOS automatically, doesn't need to be changed.
 CARDTABLE = [param.TABLEPATH,param.CARDID,'/tables/'];
+param.CARDTABLE = CARDTABLE
 if ~exist(CARDTABLE)
     mkdir([param.TABLEPATH,param.CARDID])
     mkdir(CARDTABLE)
