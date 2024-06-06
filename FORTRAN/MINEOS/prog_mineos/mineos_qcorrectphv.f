@@ -456,7 +456,7 @@ c
 c       calculate phase velocity
 c
         if (ll .ne. 0) then
-          mhz = 35.d0
+          mhz = 1000.d0
           wref = dble(mhz) * 2.d0 *pi / 1000
 c         wref = 0.3500140
 		  print *, w,wref,mhz,1.d0 + (1.d0/(qq*pi))*dlog(w/wref)
