@@ -149,8 +149,7 @@ fid=fopen(RUNFILE_q,'w');
 fprintf(fid,'%s\n',QMOD);
 fprintf(fid,'%s\n',QOUT);
 fprintf(fid,'%s\n',EIG);    % Input mode file I think brb20240604
-% fprintf(fid,'%s\n','y');
-fprintf(fid,'%s\n',' ');    % brb20240605 Temporary, to prevent q correction from trying to loop over too many mode files. 
+fprintf(fid,'%s\n','y'); % brb20240605 Keep the y here. This requires that your card file has a negative reference frequency, or q correction . 
 
 % fprintf(fid,'%s\n',MOD);
 %fprintf(fid,'%s\n',EIG2);
