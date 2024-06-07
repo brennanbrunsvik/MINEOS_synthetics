@@ -266,7 +266,7 @@ end
 
 FRECHETPATH = param.frechetpath;
 delete(['run_plotwk.',lower(TYPE)],['run_frechcv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechcv_asc.',lower(TYPE)]);
-save2pdf([FRECHETPATH,'CARD_ACFLN_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s.pdf'],fig1,1000)
+save2pdf2([FRECHETPATH,'CARD_ACFLN_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s.pdf'],fig1,1000)
 
 
 %    savefile = [CARD,'_fcv.mat'];

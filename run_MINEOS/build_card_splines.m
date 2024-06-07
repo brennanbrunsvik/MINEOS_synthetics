@@ -124,7 +124,7 @@ for iknot = 1:nknots
 %         set(gca,'fontsize',18);
 %         
 %         outfil_name = [FIGPATH,figname,'_',num2str(iicard),'.pdf'];
-%         save2pdf([outfil_name],fig2,1000);
+%         save2pdf2([outfil_name],fig2,1000);
 
         VSH_out = VSH;
         VSH_out(knot(end):knot(1)) = VSH_pchip;
@@ -211,7 +211,7 @@ for iknot = 1:nknots
 %             set(gca,'fontsize',18);
 % 
 %             outfil_name = [FIGPATH,figname,'_',num2str(iicard),'.pdf'];
-%             save2pdf([outfil_name],fig2,1000);
+%             save2pdf2([outfil_name],fig2,1000);
 
             VSH_out = VSH;
             VSH_out(knot(end):knot(1)) = VSH_pchip;
@@ -263,4 +263,4 @@ end
 % set(gca,'fontsize',18);
 % 
 % outfil_name = [FIGPATH,figname,'_allcards.pdf'];
-% save2pdf([outfil_name],fig1,1000);
+% save2pdf2([outfil_name],fig1,1000);

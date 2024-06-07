@@ -94,7 +94,7 @@ ylim(YLIMS);
 % xlim([0.9 1.01]);
 set(gca,'fontsize',16);
 
-save2pdf([frechetpath,CARDID,'_CARD'],fig1,600);
+save2pdf2([frechetpath,CARDID,'_CARD'],fig1,600);
 
 if issavemat
     struct.R = R;

@@ -147,6 +147,6 @@ set(gca,'fontsize',16,'linewidth',2);
 % set(h,'interpreter','none');
 
 %print('-painters','-dpdf','-r400',[EIGPATH,CARDID,'.',TYPEID,'.',num2str(j),'mod.',num2str(N_modes),'_fix.pdf']);
-save2pdf([EIGPATH,CARDID,'.',TYPEID,'.',num2str(mbranch),'mod.',num2str(N_modes),'_fix.pdf'],fig1,1000);
+save2pdf2([EIGPATH,CARDID,'.',TYPEID,'.',num2str(mbranch),'mod.',num2str(N_modes),'_fix.pdf'],fig1,1000);
 
 delete([param.eigpath,'*_fix.asc'],[param.eigpath,'*.asc']);

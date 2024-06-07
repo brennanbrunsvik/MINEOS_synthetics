@@ -9,7 +9,7 @@ function parameter_FRECHET_save(paramin)
 
     % User manually specifies locations of these paths. 
     paths_add = {'/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions', ... % Path to matlab unctions
-                 '/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions_additional'}; % More functions. These replace export_fig and save2pdf. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
+                 '/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions_additional'}; % More functions. These replace export_fig and save2pdf2. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
     
     % Add the paths, only if they are not already present. 
     for ipath = 1:length(paths_add) 
