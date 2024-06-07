@@ -1,3 +1,5 @@
+parameter_FRECHET_save([]); 
+
 parameter_FRECHET
 
 a1_run_mineos_check
