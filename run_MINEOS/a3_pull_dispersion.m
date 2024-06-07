@@ -8,7 +8,7 @@
 % Columns of dat{i}: 
 %               nn,ll,w,qq,phi,cv,gv,cvq,Tq,T
 %
-clear all;
+% clear all;
 
 %%%% PARAMETERS %%%%
 bw = 0;        % print in black and white? (1=yes, 0=no)

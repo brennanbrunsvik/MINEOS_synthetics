@@ -9,7 +9,8 @@
 % pylin.patty 2014.. 
 % JBR 2015
 %
-clear
+
+% clear
 
 %% get pamameters information 
 parameter_FRECHET;

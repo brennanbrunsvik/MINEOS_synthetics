@@ -12,7 +12,8 @@
 %
 
 
-clear; close all;
+% clear; 
+close all;
 addpath('~/MATLAB/DrosteEffect-BrewerMap-3.2.5.0/'); % NEED TO CHANGE THIS PATH WHEN GETTING THIS GOING ON YOUR MACHINE
 
 parameter_FRECHET;
