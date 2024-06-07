@@ -1,47 +1,56 @@
 %% Setup Parameters for running MINEOS to calculate senstivity kernels, dispersion, and synthetics
-function parameter_FRECHET_save(paramin); 
+function parameter_FRECHET_save(paramin)
+    arguments 
+        paramin = [] 
+    end
     % Define the parameters that will be used while operating the Matlab
     % Mineos wrapper. These will be saved to a .mat file, which gets read
     % any time parameter_FRECHET is executed. 
 
-    % clear all;
-    addpath('/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions'); % Path to matlab unctions
-    addpath('/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions_additional'); % More functions. These replace export_fig and save2pdf. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
-    path2runMINEOS = './'; % Path to this folder
+    % User manually specifies locations of these paths. 
+    paths_add = {'/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions', ... % Path to matlab unctions
+                 '/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/run_MINEOS/functions_additional'}; % More functions. These replace export_fig and save2pdf. If you have those functions elsewhere on your computer, then you should not need functions_additional in your path. brb2024/05/22. 
+    
+    % Add the paths, only if they are not already present. 
+    for ipath = 1:length(paths_add) 
+        pth = paths_add{ipath}; 
+        onPath = contains(lower(path), lower(pth)); % pathsep
+        if ~onPath 
+            addpath(pth); 
+        end 
+    end
+    
     path2BIN = '/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin'; % Path to fortran binaries
     
-    save_path = './parameter_FRECHET_vals.mat'; 
-    
+    path2runMINEOS = './'; % Path to this folder
+    save_path_mineos_mat = [path2runMINEOS '/parameter_FRECHET_vals.mat']; 
+
     % Mineos table parameters
     maxN = 400000; % Estimate of max number of modes 
-    minF = 0;
-    maxF = 200.05; % max frequency in mHz; %10.1; %250.05; %333.4; %500.05; %200.05; %%150.05; %50.05;
-    minL = 0;
-    maxL = 50000;
-    N_modes = 2; % <0 uses all mode branches, 1=fundamental only -------- JOSH 8/22/15
-    param.CARDID = 'synthmod'; % 'synthmod'; % 'prem_35'; %'fail_H01221_90L'; %'prem_35'; %'Nomelt_taper_aniso_constxicrman_etaPREM_constxilays'; %'pa5_5km';
-    
-    % (1 => yes, 0 => no)
-    SONLY = 1; %Spheroidal modes? (RAYLEIGH)
-    TONLY = 0; %Toroidal modes? (LOVE)
-    
-    % for plotting kernels
-    param.periods = round(logspace(log10(5),log10(200),15));
-    
+    N_modes = 1; 
+    if isstruct(paramin) && all(isfield(paramin, {'R_or_L', 'fmin', 'fmax', 'lmin', 'lmax', 'ID', 'R_or_L'})); % If the MCMC input parameters were provided, then use those. 
+        minF = paramin.fmin; 
+        maxF = paramin.fmax; 
+        minL = paramin.lmin; 
+        maxL = paramin.lmax; 
+        param.CARDID = paramin.ID; 
+        SONLY = strcmp(paramin.R_or_L, 'Ray'); 
+        TONLY = strcmp(paramin.R_or_L, 'Lov'); % brb20240607 TODO double check that we use the string 'Lov'
+    else % else use default values. 
+        minF = 0;
+        maxF = 200.05; % max frequency in mHz; %10.1; %250.05; %333.4; %500.05; %200.05; %%150.05; %50.05;
+        minL = 0;
+        maxL = 50000;
+        N_modes = 2; % <0 uses all mode branches, 1=fundamental only -------- JOSH 8/22/15
+        param.CARDID = 'synthmod'; % 'synthmod'; % 'prem_35'; %'fail_H01221_90L'; %'prem_35'; %'Nomelt_taper_aniso_constxicrman_etaPREM_constxilays'; %'pa5_5km';
+        SONLY = 1; %Spheroidal modes? (RAYLEIGH) % (1 => yes, 0 => no)
+        TONLY = 0; %Toroidal modes? (LOVE) % (1 => yes, 0 => no)
+    end
+    param.periods = round(logspace(log10(5),log10(200),15)); % for plotting kernels
     ch_mode = 0; % (DO NOT CHANGE) mode branch to check for missed eigenfrequencies 0 => T0 ------- JOSH 10/7/15
     
-    %% brb20240605 Trying to convert to function
-    % param.maxN = maxN; 
-    % param.minF = minF; 
-    % param.maxF = maxF; 
-    % param.minL = minL; 
-    % param.maxL = maxL; 
-    % param.N_modes = N_modes; 
-    % param.SONLY = SONLY; 
-    % param.TONLY = TONLY; 
-    % param.ch_mode = ch_mode; 
-    
     %% Parameters for idagrn synthetics
+    %brb20240607 Not yet set up for use with Love waves. 
     param.COMP = 'Z'; % 'Z:vertical'; 'R:radial'; 'T:tangential'; Component
     param.LENGTH_HR = 1.0; %1.0; % length of seismogram in hours
     param.DT = 1.0; % 1/samplerate
@@ -66,7 +75,6 @@ function parameter_FRECHET_save(paramin);
         param.TYPE = 'T';
     else
         error('Choose SONLY or TONLY, not both');
-        
     end
     
     % Setup Parameters for Initial Model
@@ -122,6 +130,6 @@ function parameter_FRECHET_save(paramin);
         setenv('PATH', [path2BIN,':',PATH]);
     end
     
-    save(save_path); % brb20240607 Save, so we can reload these variables each time parameter_FRECHET is executed. 
+    save(save_path_mineos_mat); % brb20240607 Save, so we can reload these variables each time parameter_FRECHET is executed. 
 
 end
