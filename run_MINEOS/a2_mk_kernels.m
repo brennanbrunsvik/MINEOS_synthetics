@@ -11,11 +11,11 @@
 % up the inversion data should be in  units of km/s and the output model perturbations are in km/s.
 %
 
-%%%
-targ = load('/Users/brennanbrunsvik/Documents/UCSB/ENAM/THBI_ENAM/transition_to_russell_mineos/examples/run_kernels_workspace_orig_mineos.mat'); 
-targ = targ.SW_V_kernels; 
-% sensitivity is targ{iperiod}.parameter(idepth), column vector
-%%%
+% %%%
+% targ = load('/Users/brennanbrunsvik/Documents/UCSB/ENAM/THBI_ENAM/transition_to_russell_mineos/examples/run_kernels_workspace_orig_mineos.mat'); 
+% targ = targ.SW_V_kernels; 
+% % sensitivity is targ{iperiod}.parameter(idepth), column vector
+% %%%
 
 % clear; 
 close all;
