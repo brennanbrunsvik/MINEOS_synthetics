@@ -1,7 +1,9 @@
 %% Setup Parameters for running MINEOS to calculate senstivity kernels, dispersion, and synthetics
-function parameter_FRECHET_save(paramin)
+function parameter_FRECHET_save(paramin, swperiods, many_plots)
     arguments 
         paramin = [] 
+        swperiods = round(logspace(log10(5),log10(200),15)); 
+        many_plots=false;
     end
     % Define the parameters that will be used while operating the Matlab
     % Mineos wrapper. These will be saved to a .mat file, which gets read
@@ -34,8 +36,8 @@ function parameter_FRECHET_save(paramin)
         minL = paramin.lmin; 
         maxL = paramin.lmax; 
         param.CARDID = paramin.ID; 
-        SONLY = strcmp(paramin.R_or_L, 'Ray'); 
-        TONLY = strcmp(paramin.R_or_L, 'Lov'); % brb20240607 TODO double check that we use the string 'Lov'
+        SONLY = strcmp(paramin.R_or_L, 'Ray') || strcmp(paramin.R_or_L, 'R'); 
+        TONLY = strcmp(paramin.R_or_L, 'Lov') || strcmp(paramin.R_or_L, 'L'); % brb20240607 TODO double check that we use the string 'Lov'
     else % else use default values. 
         minF = 0;
         maxF = 200.05; % max frequency in mHz; %10.1; %250.05; %333.4; %500.05; %200.05; %%150.05; %50.05;
@@ -46,9 +48,12 @@ function parameter_FRECHET_save(paramin)
         SONLY = 1; %Spheroidal modes? (RAYLEIGH) % (1 => yes, 0 => no)
         TONLY = 0; %Toroidal modes? (LOVE) % (1 => yes, 0 => no)
     end
-    param.periods = round(logspace(log10(5),log10(200),15)); % for plotting kernels
+    param.periods = swperiods; % for plotting kernels
     ch_mode = 0; % (DO NOT CHANGE) mode branch to check for missed eigenfrequencies 0 => T0 ------- JOSH 10/7/15
     
+    %% brb extra options
+    param.many_plots = many_plots; 
+
     %% Parameters for idagrn synthetics
     %brb20240607 Not yet set up for use with Love waves. 
     param.COMP = 'Z'; % 'Z:vertical'; 'R:radial'; 'T:tangential'; Component
@@ -69,6 +74,9 @@ function parameter_FRECHET_save(paramin)
     end
     
     %%
+    disp('SONLY and TONLY: ')
+    disp(SONLY)
+    disp(TONLY)
     if SONLY == 1 && TONLY == 0
         param.TYPE = 'S';
     elseif SONLY == 0 && TONLY == 1

@@ -22,15 +22,10 @@ com = ['rm ',CARDTABLE,'*',lower(param.TYPE),num2str(floor(minF)),'to',num2str(f
 com = ['rm ',CARDTABLE,'log*'];
 [status,log] = system(com);
 
-%% Set path to fortran executables
-% setpath_mineos;
-
-
 %% Change environment variables to deal with gfortran
 setenv('GFORTRAN_STDIN_UNIT', '5') 
 setenv('GFORTRAN_STDOUT_UNIT', '6') 
 setenv('GFORTRAN_STDERR_UNIT', '0')
-
 
 %% Run Spheroidal Branches First
 if SONLY 
@@ -62,7 +57,7 @@ if SONLY
     end
     toc
     
-            TYPEID = param.STYPEID;
+        TYPEID = param.STYPEID;
         com = ['cat ',CARDTABLE,param.CARDID,'.',TYPEID,'.asc > ',CARDTABLE,param.CARDID,'.',TYPEID,'_',num2str(num_loop),'.asc'];
         [status,log] = system(com);
         com = ['cat ',CARDTABLE,param.CARDID,'.',TYPEID,'.eig > ',CARDTABLE,param.CARDID,'.',TYPEID,'_',num2str(num_loop),'.eig'];

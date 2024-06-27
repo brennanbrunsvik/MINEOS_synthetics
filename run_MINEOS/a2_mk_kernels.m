@@ -11,6 +11,11 @@
 % up the inversion data should be in  units of km/s and the output model perturbations are in km/s.
 %
 
+%%%
+targ = load('/Users/brennanbrunsvik/Documents/UCSB/ENAM/THBI_ENAM/transition_to_russell_mineos/examples/run_kernels_workspace_orig_mineos.mat'); 
+targ = targ.SW_V_kernels; 
+% sensitivity is targ{iperiod}.parameter(idepth), column vector
+%%%
 
 % clear; 
 close all;
@@ -40,7 +45,7 @@ is_frech_x = 0; % 1 => scale ax; 0 => autoscale
 frech_x = [0 2e-8]; %[0 2.0e-7]; %[0 2.0e-8];
 %frech_x = [-2.5e-8 2.5e-8];
 
-isfigure = 1; % plot kernels?
+isfigure = param.many_plots; % plot kernels?
 
 %% Set path to executables
 setpath_plotwk;
@@ -331,9 +336,11 @@ end
 
 FRECHETPATH = param.frechetpath;
 delete(['run_plotwk.',lower(TYPE)],['run_frechcv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechcv_asc.',lower(TYPE)]);
-save2pdf2([FRECHETPATH,'CARD_Vs_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s.pdf'],fig1,1000)
-save2pdf2([FRECHETPATH,'CARD_Vs_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s_kernels.pdf'],figure(99),1000)
 
+if param.many_plots; 
+    save2pdf2([FRECHETPATH,'CARD_Vs_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s.pdf'],fig1,1000)
+    save2pdf2([FRECHETPATH,'CARD_Vs_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s_kernels.pdf'],figure(99),1000)
+end
 %    savefile = [CARD,'_fcv.mat'];
 %    save(savefile,'FRECH_T','FRECH_S');
 % Change the environment variables back to the way they were
