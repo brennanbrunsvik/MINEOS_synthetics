@@ -74,9 +74,9 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
     end
     
     %%
-    disp('SONLY and TONLY: ')
-    disp(SONLY)
-    disp(TONLY)
+    % disp('SONLY and TONLY: ')
+    % disp(SONLY)
+    % disp(TONLY)
     if SONLY == 1 && TONLY == 0
         param.TYPE = 'S';
     elseif SONLY == 0 && TONLY == 1

@@ -130,6 +130,11 @@ VPH = ncard{7};
 VSH = ncard{8};
 eta = ncard{9};
 
+% Store the original model values. Will use for changing units of the
+% kernels. 
+% End of array is surface. Larger R is end of array. So R is radius. 
+mod_in = struct('rad',R, 'vsv', VSV, 'vsh', VSH, 'vpv', VPV, 'vph', VPH, 'eta', eta, 'rho', RHO);
+
 vs = VSV/1000;
 vp = VPV/1000;
 r = 6371-R/1000;
