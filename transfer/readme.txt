@@ -1,0 +1,1 @@
+You can use sendERI.bash to send MINEOS to your HPC. 
