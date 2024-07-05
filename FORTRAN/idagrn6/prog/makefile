@@ -5,7 +5,7 @@ LFLAGS= $(MYLFLAGS)
 MYBIN= ~/bin
 # MYLIB= ~/Unix/libg77
 # MYLIB= ~/Unix/lib
-MYLIB= /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/libgfortran # /Users/russell/Lamont/MINEOS/MINEOS_PATNAT/prog_plotwk/libgfortran/
+MYLIB= ~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/libgfortran # /Users/russell/Lamont/MINEOS/MINEOS_PATNAT/prog_plotwk/libgfortran/
 #
 PROG= idagrn6_sac_excite
 SUBS= spheroidal5.f toroidal5_excite.f spheroidal_exc5.f toroidal_exc5.f \

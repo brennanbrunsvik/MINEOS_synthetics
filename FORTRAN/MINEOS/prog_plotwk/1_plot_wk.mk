@@ -1,6 +1,6 @@
-MYBIN = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
+MYBIN = ~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
 FC = gfortran
-MYLIB = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/libgfortran
+MYLIB = ~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/libgfortran
 #
 PROG= plot_wk
 SUBS= amp.f branch_sort.f class.f color.f cvtaper.f excite.f fix_class_c.f \

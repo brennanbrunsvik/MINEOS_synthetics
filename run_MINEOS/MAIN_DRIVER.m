@@ -10,8 +10,11 @@ a3_pull_dispersion
 
 a4_pull_eigenfuncs
 
-b1_run_idagrn
+disp('Done with Matlab test. ')
 
-% a5_run_idagrn_branch % brb2024/05/22 I don't see this script in the Github repository. Maybe it is no longer needed. 
-
-b2_run_idagrn_excitation
+% Don't need the below functions if you don't need waveforms. 
+% b1_run_idagrn
+% 
+% % a5_run_idagrn_branch % brb2024/05/22 I don't see this script in the Github repository. Maybe it is no longer needed. 
+% 
+% b2_run_idagrn_excitation

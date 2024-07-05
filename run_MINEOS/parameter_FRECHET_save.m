@@ -22,7 +22,7 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
         end 
     end
     
-    path2BIN = '/Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin'; % Path to fortran binaries
+    path2BIN = '~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin'; % Path to fortran binaries
     
     path2runMINEOS = './'; % Path to this folder
     save_path_mineos_mat = [path2runMINEOS '/parameter_FRECHET_vals.mat']; 

@@ -12,7 +12,7 @@
 %
 
 % %%%
-% targ = load('/Users/brennanbrunsvik/Documents/UCSB/ENAM/THBI_ENAM/transition_to_russell_mineos/examples/run_kernels_workspace_orig_mineos.mat'); 
+% targ = load('~/Documents/UCSB/ENAM/THBI_ENAM/transition_to_russell_mineos/examples/run_kernels_workspace_orig_mineos.mat'); 
 % targ = targ.SW_V_kernels; 
 % % sensitivity is targ{iperiod}.parameter(idepth), column vector
 % %%%
@@ -63,7 +63,7 @@ com = ['cat run_plotwk.',lower(TYPE),' | plot_wk > plot_wk.LOG'];
 [status,log] = system(com);
 
 if status ~= 0     
-    error( 'something is wrong at plot_wk')
+    error( 'something is wrong at plot_wk. Log was: \n\n%s\n\n', log)
 end
 
 

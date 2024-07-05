@@ -1,4 +1,5 @@
 FORTRAN/bin/**
+FORTRAN/libgfortran/*.a
 lib/**
 **.a 
 **.o
