@@ -71,7 +71,7 @@ for ip = 1:length(periods)
     fclose(fid);
     
     % Run draw_frechet_gv
-    disp(sprintf('--- Period : %s',num2str(periods(ip))));
+    % disp(sprintf('--- Period : %s',num2str(periods(ip))));
     
     if exist(FRECHASC,'file') == 2
     %disp('File exists! Removing it now')
@@ -84,13 +84,12 @@ for ip = 1:length(periods)
     fprintf(fid_log,log); % JBR
 %    log
     dT = abs(periods(ip)-str2num(log(end-10:end)));
-    if ( dT < 1.5)
-        disp(sprintf('Find closest period: %s',log(end-10:end)));
-    else
-        disp('the closest period is FAR AWAY from period of interest')
-        disp(sprintf('Find closest period: %s',log(end-10:end)));
-        
-    end
+    % if ( dT < 1.5)
+    %     disp(sprintf('Find closest period: %s',log(end-10:end)));
+    % else
+    %     disp('the closest period is FAR AWAY from period of interest')
+    %     disp(sprintf('Find closest period: %s',log(end-10:end)));
+    % end
     
     % Load in frechet files for each period
     

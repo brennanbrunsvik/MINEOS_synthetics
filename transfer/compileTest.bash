@@ -22,4 +22,4 @@ echo 'Starting test for Mineos'
 echo 'You may need to change the version of matlab that is loaded for the test. '
 cd ../run_MINEOS
 module load MatLab/R2021b # Or whichever version you have here. 
-matlab -nodisplay -nodesktop -nosplash -r "MAIN_DRIVER"
+matlab -nodisplay -nodesktop -nosplash -r "MAIN_DRIVER; exit"

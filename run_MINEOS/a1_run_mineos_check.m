@@ -130,7 +130,8 @@ if SONLY
         error( 'something is wrong at mineos_table')
     end
     
-    delete('run_nohang.s','run_q.s', 'run_strip.s', 'run_table.s', 'run_eigrecov.s')
+    % delete('run_nohang.s','run_q.s', 'run_strip.s', 'run_table.s', 'run_eigrecov.s')
+    cellfun(@(f) java.io.File(f).delete(), {'run_nohang.t', 'run_q.t', 'run_strip.t', 'run_table.t', 'run_eigrecov.t'}, 'UniformOutput', false); % Delete these files. Java io is faster at deleting. But, also, doing this prevents warnings when the files were not present. 
 end
 
 %% Run toroidal branches next
@@ -240,12 +241,14 @@ if TONLY
         error( 'something is wrong at mineos_table')
     end
     
-    delete('run_nohang.t','run_q.t', 'run_strip.t', 'run_table.t', 'run_eigrecov.t')
+    % delete('run_nohang.t','run_q.t', 'run_strip.t', 'run_table.t', 'run_eigrecov.t')
+    cellfun(@(f) java.io.File(f).delete(), {'run_nohang.t', 'run_q.t', 'run_strip.t', 'run_table.t', 'run_eigrecov.t'}, 'UniformOutput', false); % Delete these files. Java io is faster at deleting. But, also, doing this prevents warnings when the files were not present. 
 
 end
 
 % Delete unnecessary files
-delete('*.LOG','qlog','log_table');
+cellfun(@(f) java.io.File(f).delete(), {'qlog', 'log_table'}, 'UniformOutput', false); % Java io doesn't raise error if file not there
+delete('*.LOG')
 delete([CARDTABLE,'log*']);
 delete([CARDTABLE,'*.asc']);
 if exist([CARDTABLE,param.CARDID,'.',TYPEID,'_0.eig_fix'],'file') ~= 0

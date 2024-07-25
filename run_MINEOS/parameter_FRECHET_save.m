@@ -97,10 +97,10 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
     
     %% create dir for output MINEOS automatically, doesn't need to be changed.
     CARDTABLE = [param.TABLEPATH,param.CARDID,'/tables/'];
-    param.CARDTABLE = CARDTABLE
+    param.CARDTABLE = CARDTABLE; 
     if ~exist(CARDTABLE)
-        mkdir([param.TABLEPATH,param.CARDID])
-        mkdir(CARDTABLE)
+        mkdir([param.TABLEPATH,param.CARDID]);
+        mkdir(CARDTABLE);
     end
     
     %% setup Parameters for kernals
@@ -108,21 +108,21 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
     param.frechetpath = [path2runMINEOS,'/MODE/FRECHET/',param.CARDID,'/'];
     
     if ~exist(param.frechetpath) 
-        mkdir(param.frechetpath)
+        mkdir(param.frechetpath); 
     end
     
     %% setup Parameters for eigenfunctions
     param.eigpath = [path2runMINEOS,'/MODE/EIGEN/',param.CARDID,'/'];
     
     if ~exist(param.eigpath) 
-        mkdir(param.eigpath)
+        mkdir(param.eigpath); 
     end
     
     %% setup Parameters for Dispersion
     param.disperspath = [path2runMINEOS,'/MODE/DISPERSION/',param.CARDID,'/'];
     
     if ~exist(param.disperspath) 
-        mkdir(param.disperspath)
+        mkdir(param.disperspath); 
     end
     
     %% Turn on if only want to calculate S or T or both for mineous
