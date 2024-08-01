@@ -12,6 +12,10 @@ Mode tables are used as input to idagrn6, which produces synthetic seismograms f
 
 ## Getting Started
 
+!!!
+Need to add the bin to your .bash_profile (or your shells path). I added this to my .bash_profile: 
+export PATH=~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin:$PATH
+
 Must have installed
 - gfortran (other Fortran compilers might work but have not been tested)
 - MATLAB
