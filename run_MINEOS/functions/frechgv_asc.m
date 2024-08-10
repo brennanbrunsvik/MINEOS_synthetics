@@ -1,4 +1,4 @@
-% frechcv_asc.
+% frechgv_asc.
 % Program converts binary frechet kernels in phase velocity to ascii
 % versions and saves the output in a mat file
 % Involves writing run files for draw_frechet_gv and running the fortran
@@ -8,8 +8,9 @@
 % make TYPEID as a parameter in parameter_FRECHET
 % pylin.patty 2015/01
 
-function [FRECH] = frechcv_asc(TYPE,CARD,BRANCH)
-% Basically the same as frechgv_asc. They should be combined. 
+function [FRECH] = frechgv_asc(TYPE,CARD,BRANCH)
+% Basically the same as frechcv_asc. They should be combined. 
+
 
 % TYPE = 'T';
 % CARD = param.CARDID;
@@ -28,13 +29,13 @@ periods = param.periods;
 if strcmp(TYPE,'T') == 1
     disp('Toroidal!');
     
-    RUNFILE = 'run_frechcv_asc.t';
+    RUNFILE = 'run_frechgv_asc.t';
     TYPEID = param.TTYPEID;
     
 elseif strcmp(TYPE,'S') == 1
     disp('Spheroidal!');
     
-    RUNFILE = 'run_frechcv_asc.s';
+    RUNFILE = 'run_frechgv_asc.s';
     TYPEID = param.STYPEID;
     
 else
@@ -55,18 +56,18 @@ BRID = [num2str(BRANCH)];
 %     disp('Branch has no name! Change it in the script')
 % end
 
-FRECHCV = [FRECHETPATH,CARD,'.',TYPEID,'.fcv.',BRID];
+FRECHGV = [FRECHETPATH,CARD,'.',TYPEID,'.fgv.',BRID];
 
 
 
 
 for ip = 1:length(periods)
     
-    FRECHASC = [FRECHETPATH,CARD,'.',TYPEID,'.',BRID,'.',num2str(periods(ip))];
+    FRECHASC = [FRECHETPATH,CARD,'.',TYPEID,'.',BRID,'.',num2str(periods(ip)),'.gv'];
     
     % Write runfile for draw_frechet_gv
     fid = fopen(RUNFILE,'w');
-    fprintf(fid,'%s\n',FRECHCV); %input binary file
+    fprintf(fid,'%s\n',FRECHGV); %input binary file
     fprintf(fid,'%s\n',FRECHASC); %output ascii file
     fprintf(fid,'%i\n',periods(ip));
     fclose(fid);
@@ -90,6 +91,7 @@ for ip = 1:length(periods)
     % else
     %     disp('the closest period is FAR AWAY from period of interest')
     %     disp(sprintf('Find closest period: %s',log(end-10:end)));
+        
     % end
     
     % Load in frechet files for each period

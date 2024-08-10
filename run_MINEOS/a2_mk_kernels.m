@@ -22,6 +22,8 @@ close all;
 addpath('~/MATLAB/DrosteEffect-BrewerMap-3.2.5.0/'); % NEED TO CHANGE THIS PATH WHEN GETTING THIS GOING ON YOUR MACHINE
 
 parameter_FRECHET;
+phv_or_grv_kernel = lower(param.phV_or_grV); % No caps, that's how this script works. 
+
 branch = 0; % Fundamental -> 0
 
 is_deletefrech = 1; % Delete the .frech files to save space?
@@ -92,15 +94,19 @@ toc
 %% run "frechet_cv" to generate the cv kernels
 % Convert frechet to ascii
 % Make CV Frechet Kernels
-disp('--- Make CV Frechet Kernels ---');
+disp(sprintf('--- Make %s Frechet Kernels ---',phv_or_grv_kernel));
 
+if strcmp(phv_or_grv_kernel,'phv'); 
+    write_frechcv(TYPE,CARDID,branch)
+    com = ['cat run_frechcv.',lower(TYPE),' | frechet_cv > frechet_cv.LOG'];
+elseif strcmp(phv_or_grv_kernel,'grv'); 
+    write_frechgv(TYPE,CARDID,branch)
 
-write_frechcv(TYPE,CARDID,branch)
-
-com = ['cat run_frechcv.',lower(TYPE),' | frechet_cv > frechet_cv.LOG'];
+    com = ['cat run_frechgv.',lower(TYPE),' | frechet_gv > frechet_gv.LOG'];
+end
 [status,log] = system(com);
 if status ~= 0     
-    error( 'something is wrong at frechet_cv')
+    error( 'something is wrong at frechet_c/gv')
 end
 
 %% load CARD file (vmod)
@@ -147,7 +153,12 @@ disp('--- Convert Frechet CV to ascii ---');
     % sensitivity kernels for all periods of interest
     
 if ( TYPE == 'S') 
-    FRECH_S = frechcv_asc(TYPE,CARDID,branch);
+    if strcmp(phv_or_grv_kernel, 'phv'); 
+        FRECH_S = frechcv_asc(TYPE,CARDID,branch);
+    elseif strcmp(phv_or_grv_kernel, 'grv'); 
+        FRECH_S = frechgv_asc(TYPE,CARDID,branch);
+    end
+
     if isfigure
         fig1 = figure(62); set(gcf, 'Color', 'w');
         set(gcf,'position',[112   169   830   532]);
@@ -256,7 +267,11 @@ if ( TYPE == 'S')
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 elseif ( TYPE == 'T')
-    FRECH_T = frechcv_asc(TYPE,CARDID,branch);  
+    if strcmp(phv_or_grv_kernel, 'phv'); 
+        FRECH_T = frechcv_asc(TYPE,CARDID,branch);
+    elseif strcmp(phv_or_grv_kernel, 'grv'); 
+        FRECH_T = frechgv_asc(TYPE,CARDID,branch);
+    end
 
     if isfigure
         fig1 = figure(62); set(gcf, 'Color', 'w'); 
@@ -340,7 +355,15 @@ elseif ( TYPE == 'T')
 end
 
 FRECHETPATH = param.frechetpath;
-delete(['run_plotwk.',lower(TYPE)],['run_frechcv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechcv_asc.',lower(TYPE)]);
+% delete(['run_plotwk.',lower(TYPE)],['run_frechcv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechcv_asc.',lower(TYPE)]);
+% delete(['run_plotwk.',lower(TYPE)],['run_frechgv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechgv_asc.',lower(TYPE)]);
+files_to_delete = {['run_plotwk.', lower(TYPE)], ['run_frechcv.', lower(TYPE)], ['run_frechet.', lower(TYPE)], ['run_frechcv_asc.', lower(TYPE)], ...
+                   ['run_frechgv.', lower(TYPE)], ['run_frechgv_asc.', lower(TYPE)]};
+for i = 1:length(files_to_delete)
+    if exist(files_to_delete{i}, 'file')
+        delete(files_to_delete{i});
+    end
+end
 
 if param.many_plots; 
     save2pdf2([FRECHETPATH,'CARD_Vs_kernels_',lower(TYPE),'_',CARDID,'_b',num2str(branch),'.',num2str(N_modes),'_',num2str(periods(1)),'_',num2str(periods(end)),'s.pdf'],fig1,1000)
@@ -355,5 +378,9 @@ setenv('GFORTRAN_STDERR_UNIT', '-1')
 
 delete('*.LOG');
 if is_deletefrech
-    delete([param.frechetpath,'*.fcv.*'],[param.frechetpath,'*.frech'])
+    if strcmp(phv_or_grv_kernel, 'phv'); 
+        delete([param.frechetpath,'*.fcv.*'],[param.frechetpath,'*.frech'])
+    elseif strcmp(phv_or_grv_kernel, 'grv'); 
+        delete([param.frechetpath,'*.fgv.*'],[param.frechetpath,'*.frech'])
+    end
 end

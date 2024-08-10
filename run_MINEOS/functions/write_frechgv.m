@@ -1,10 +1,10 @@
-%% Write frechet_cv driver
+%% Write frechet_gv driver
 % NJA, 2014
 % Must designate mode branch of interest (0 = fundamental)
 % make TYPEID as a parameter in parameter_FRECHET
 % pylin.patty 2015/01
-function write_frechcv(TYPE,CARD,BR)
-% Basically the same as write_frechgv. They should be combined. 
+function write_frechgv(TYPE,CARD,BR)
+% Basically the same as write_frechcv. They should be combined. 
 
 
 parameter_FRECHET;
@@ -17,13 +17,13 @@ TABLEPATH = param.TABLEPATH;
 if strcmp(TYPE,'T') == 1
     disp('Toroidal!');
     
-    RUNFILE = 'run_frechcv.t';
+    RUNFILE = 'run_frechgv.t';
     TYPEID = param.TTYPEID;
     
 elseif strcmp(TYPE,'S') == 1
     disp('Spheroidal!');
     
-    RUNFILE = 'run_frechcv.s';
+    RUNFILE = 'run_frechgv.s';
     TYPEID = param.STYPEID;
     
 else
@@ -47,18 +47,18 @@ BRID = [num2str(BR)];
 % QMOD = [CARDPATH,CARD,'.qmod'];
 % BRANCH = [DATAPATH,CARD,'.',TYPEID,'.table_hdr.branch'];
 FRECH = [FRECHETPATH,CARD,'.',TYPEID,'.frech'];
-FRECHCV = [FRECHETPATH,CARD,'.',TYPEID,'.fcv.',BRID];
+FRECHGV = [FRECHETPATH,CARD,'.',TYPEID,'.fgv.',BRID];
 
-if exist(FRECHCV,'file') == 2
+if exist(FRECHGV,'file') == 2
     disp('File exists! Removing it now')
-    com = ['rm -f',FRECHCV];
+    com = ['rm -f',FRECHGV];
     [status,log] = system(com);
 end
 
 fid = fopen(RUNFILE,'w');
 fprintf(fid,'%s\n',FRECH);
 fprintf(fid,'%i\n',BR);
-fprintf(fid,'%s\n',FRECHCV);
+fprintf(fid,'%s\n',FRECHGV);
 fclose(fid);
 
     

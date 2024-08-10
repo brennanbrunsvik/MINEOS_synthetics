@@ -4,6 +4,7 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
         paramin = [] 
         swperiods = round(logspace(log10(5),log10(200),15)); 
         many_plots=false;
+        % options.phv_or_grv = 'phV'; 
     end
     % Define the parameters that will be used while operating the Matlab
     % Mineos wrapper. These will be saved to a .mat file, which gets read
@@ -48,6 +49,13 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
         SONLY = 1; %Spheroidal modes? (RAYLEIGH) % (1 => yes, 0 => no)
         TONLY = 0; %Toroidal modes? (LOVE) % (1 => yes, 0 => no)
     end
+    
+    if isfield(paramin, 'phV_or_grV'); 
+        param.phV_or_grV = paramin.phV_or_grV; 
+    else
+        param.phV_or_grV = 'phV'; 
+    end 
+
     param.periods = swperiods; % for plotting kernels
     ch_mode = 0; % (DO NOT CHANGE) mode branch to check for missed eigenfrequencies 0 => T0 ------- JOSH 10/7/15
     
