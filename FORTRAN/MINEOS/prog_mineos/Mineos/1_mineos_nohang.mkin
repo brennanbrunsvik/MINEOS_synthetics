@@ -1,5 +1,6 @@
 MYBIN = BINxreplace
 FC = FCxreplace
+FFLAGS = -O2
 #
 PROG= mineos_nohang
 SUBS= 

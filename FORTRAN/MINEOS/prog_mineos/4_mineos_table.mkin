@@ -1,6 +1,6 @@
 MYBIN = BINxreplace
 FC = FCxreplace
-FFLAGS=-ffixed-line-length-none
+FFLAGS=-ffixed-line-length-none -O2
 #
 PROG= mineos_table
 SUBS= kblnk.f

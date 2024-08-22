@@ -1,6 +1,7 @@
 MYBIN = BINxreplace
 FC = FCxreplace
-FFLAGS= $(MYFFLAGS)
+FFLAGS= -O2
+#$(MYFFLAGS)
 # FFLAGS = -g -C
 LFLAGS= -L$(MYLIB)
 

@@ -1,6 +1,6 @@
 MYBIN = BINxreplace
 FC = FCxreplace
-FFLAGS=-ffixed-line-length-none
+FFLAGS=-ffixed-line-length-none -O2
 #
 PROG= eig_recover
 SUBS= kblnk.f
