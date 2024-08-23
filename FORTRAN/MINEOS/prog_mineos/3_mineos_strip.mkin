@@ -1,6 +1,6 @@
 MYBIN = BINxreplace
 FC = FCxreplace
-FFLAGS=-ffixed-line-length-none -O2
+FFLAGS=-ffixed-line-length-none -O1
 #
 PROG= mineos_strip
 SUBS=

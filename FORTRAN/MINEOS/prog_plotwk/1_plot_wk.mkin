@@ -1,7 +1,7 @@
 MYBIN = BINxreplace
 FC = FCxreplace
 MYLIB = LIBxreplace
-FFLAGS = -O2
+FFLAGS = -O1
 #
 PROG= plot_wk
 SUBS= amp.f branch_sort.f class.f color.f cvtaper.f excite.f fix_class_c.f \
