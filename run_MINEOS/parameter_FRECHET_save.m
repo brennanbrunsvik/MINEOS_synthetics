@@ -40,11 +40,12 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
         SONLY = strcmp(paramin.R_or_L, 'Ray') || strcmp(paramin.R_or_L, 'R'); 
         TONLY = strcmp(paramin.R_or_L, 'Lov') || strcmp(paramin.R_or_L, 'L'); % brb20240607 TODO double check that we use the string 'Lov'
     else % else use default values. 
+        warning('Using default Mineos parameters, for frequency, min/maxL, nmodes, etc. ')
         minF = 0;
         maxF = 200.05; % max frequency in mHz; %10.1; %250.05; %333.4; %500.05; %200.05; %%150.05; %50.05;
         minL = 0;
         maxL = 50000;
-        N_modes = 2; % <0 uses all mode branches, 1=fundamental only -------- JOSH 8/22/15
+        N_modes = 1; % <0 uses all mode branches, 1=fundamental only -------- JOSH 8/22/15
         param.CARDID = 'synthmod'; % 'synthmod'; % 'prem_35'; %'fail_H01221_90L'; %'prem_35'; %'Nomelt_taper_aniso_constxicrman_etaPREM_constxilays'; %'pa5_5km';
         SONLY = 1; %Spheroidal modes? (RAYLEIGH) % (1 => yes, 0 => no)
         TONLY = 0; %Toroidal modes? (LOVE) % (1 => yes, 0 => no)

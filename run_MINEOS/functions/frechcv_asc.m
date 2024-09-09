@@ -82,6 +82,8 @@ for ip = 1:length(periods)
     
     com = sprintf('cat %s | draw_frechet_gv',RUNFILE);
     [status,log] = system(com);
+
+    
     fprintf(fid_log,log); % JBR
 %    log
     dT = abs(periods(ip)-str2num(log(end-10:end)));

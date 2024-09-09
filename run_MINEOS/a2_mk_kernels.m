@@ -17,9 +17,11 @@
 % % sensitivity is targ{iperiod}.parameter(idepth), column vector
 % %%%
 
+tic 
+
 % clear; 
 close all;
-addpath('~/MATLAB/DrosteEffect-BrewerMap-3.2.5.0/'); % NEED TO CHANGE THIS PATH WHEN GETTING THIS GOING ON YOUR MACHINE
+% addpath('~/MATLAB/DrosteEffect-BrewerMap-3.2.5.0/'); % NEED TO CHANGE THIS PATH WHEN GETTING THIS GOING ON YOUR MACHINE
 
 parameter_FRECHET;
 phv_or_grv_kernel = lower(param.phV_or_grV); % No caps, that's how this script works. 
@@ -68,8 +70,12 @@ if status ~= 0
     error( 'something is wrong at plot_wk. Log was: \n\n%s\n\n', log)
 end
 
+fprintf('tictoc the startup stuff\n')
+toc 
 
 %% run "frechet" to generate the frechet file 
+tic
+
 NDISC = 0;
 ZDISC = [];
 
@@ -83,15 +89,17 @@ else
     write_frech_chk(NDISC)
 end
 disp('Be patient! This will take ~25 s');
-tic
+
 com = ['cat run_frechet.',lower(TYPE),' | frechet > frechet.LOG'];
 [status,log] = system(com);
 if status ~= 0     
     error( 'something is wrong at frechet')
 end
+fprintf('tictoc run "frechet" to generate the frechet file \n')
 toc
 
 %% run "frechet_cv" to generate the cv kernels
+tic
 % Convert frechet to ascii
 % Make CV Frechet Kernels
 disp(sprintf('--- Make %s Frechet Kernels ---',phv_or_grv_kernel));
@@ -108,9 +116,12 @@ end
 if status ~= 0     
     error( 'something is wrong at frechet_c/gv')
 end
+fprintf('tictoc run "frechet_cv" to generate the cv kernels\n')
+toc
 
 %% load CARD file (vmod)
 
+tic
 CARD = param.CARD;
 CARDPATH = param.CARDPATH;
 FULLPATH = [CARDPATH,CARD];
@@ -144,9 +155,14 @@ mod_in = struct('rad',R, 'vsv', VSV, 'vsh', VSH, 'vpv', VPV, 'vph', VPH, 'eta', 
 vs = VSV/1000;
 vp = VPV/1000;
 r = 6371-R/1000;
+
+fprintf('tictoc load CARD file (vmod)\n')
+
+toc
 %% Convert CV Frechet kernels to ascii with phase-velocity sensitivity
 % Will do this for all periods of interest
 
+tslowpart = tic
 disp('--- Convert Frechet CV to ascii ---');
 
     % Program writes run file for draw_frechet_gv, runs it, and reads in
@@ -353,7 +369,11 @@ elseif ( TYPE == 'T')
             
     end
 end
+fprintf('tictoc Convert CV Frechet kernels to ascii with phase-velocity sensitivity\n')
+toc(tslowpart)
 
+% Last section of a2
+tic
 FRECHETPATH = param.frechetpath;
 % delete(['run_plotwk.',lower(TYPE)],['run_frechcv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechcv_asc.',lower(TYPE)]);
 % delete(['run_plotwk.',lower(TYPE)],['run_frechgv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechgv_asc.',lower(TYPE)]);
@@ -384,3 +404,5 @@ if is_deletefrech
         delete([param.frechetpath,'*.fgv.*'],[param.frechetpath,'*.frech'])
     end
 end
+fprintf('tictoc Last section of a2\n')
+toc
