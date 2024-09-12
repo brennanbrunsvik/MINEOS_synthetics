@@ -1,6 +1,7 @@
 MYBIN = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
 FC = gfortran
-FFLAGS= $(MYFFLAGS)
+FFLAGS= -O1
+#$(MYFFLAGS)
 # FFLAGS = -g -C
 LFLAGS= -L$(MYLIB)
 

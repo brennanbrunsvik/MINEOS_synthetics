@@ -1,6 +1,6 @@
 FBIN = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
 FC = gfortran
-FFLAGS=-ffixed-line-length-none 
+FFLAGS=-ffixed-line-length-none -O1
 #-L/usr/local/include 
 #FFLAGS2=-march=x86_64
 

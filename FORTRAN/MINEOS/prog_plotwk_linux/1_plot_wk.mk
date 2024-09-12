@@ -1,7 +1,7 @@
-MYBIN = ~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
+MYBIN = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
 FC = gfortran
-MYLIB = ~/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/libgfortran
-FFLAGS = -mcmodel=medium
+MYLIB = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/libgfortran
+FFLAGS = -mcmodel=small -O1
 #
 PROG= plot_wk
 SUBS= amp.f branch_sort.f class.f color.f cvtaper.f excite.f fix_class_c.f \

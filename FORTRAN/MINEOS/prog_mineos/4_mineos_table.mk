@@ -1,6 +1,6 @@
 MYBIN = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
 FC = gfortran
-FFLAGS=-ffixed-line-length-none
+FFLAGS=-ffixed-line-length-none -O1
 #
 PROG= mineos_table
 SUBS= kblnk.f

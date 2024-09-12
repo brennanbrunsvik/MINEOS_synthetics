@@ -1,5 +1,6 @@
 MYBIN = /Users/brennanbrunsvik/Documents/repositories/Peoples_codes/MINEOS_synthetics/FORTRAN/bin
 FC = gfortran
+FFLAGS = -O1
 #
 PROG= mineos_nohang
 SUBS= 
