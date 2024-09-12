@@ -162,7 +162,7 @@ toc
 %% Convert CV Frechet kernels to ascii with phase-velocity sensitivity
 % Will do this for all periods of interest
 
-tslowpart = tic
+tslowpart = tic; 
 disp('--- Convert Frechet CV to ascii ---');
 
     % Program writes run file for draw_frechet_gv, runs it, and reads in

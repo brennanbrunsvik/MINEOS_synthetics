@@ -112,7 +112,7 @@ if SONLY
     com = ['cat run_q.s | mineos_qcorrectphv'];
     [status,log] = system(com);
     if status ~= 0     
-        error( 'something is wrong at mineos_qcorrectphv')
+        error( 'something is wrong at mineos_qcorrectphv. Error was: \n %s', log)
     end
     
     % mineos_strip

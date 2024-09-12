@@ -3,7 +3,7 @@ addpath('~/MATLAB/DrosteEffect-BrewerMap-3.2.5.0/'); % NEED TO CHANGE THIS PATH 
 
 
 swperiods = round(logspace(log10(5),log10(200),15)); 
-many_plots=false;
+many_plots=true;
 paramin = struct('phV_or_grV', 'phV'); 
 parameter_FRECHET_save(paramin, swperiods, many_plots); 
 

@@ -1,5 +1,9 @@
       program draw_frechet_gv
       
+c brb 2024/09/11 I modified to read the input kernel data once, then
+c loop over each desired period and produce the output. 
+c It was slow to read the input data many times, once for each period. 
+
 cad April 8, 2008
 cad modified this program to write out gr-velo kernels
 cad      
@@ -88,6 +92,12 @@ cad added this
       integer nnsave(10000),llsave(10000),irecsave(10000)
       real*4 wsave(10000)
 cad end of addition
+
+c brb Check computation times of various parts of the code
+      integer start_time, end_time, clock_rate
+      real elapsed_time
+c end brb
+
 c
       integer*4 nn, ll, knot, ifirst
       integer*4 nm(nbranch)
@@ -116,46 +126,44 @@ c  n, radial order from eigenfunction file
 c  l, angular order from eigenfunction file
 c
       logical ldirect
-c
       character*1 comp(3), ans, ans2
       character*256 m_file,o_file,b_file,t_file
-c
       data comp /'S','T','S'/
       data pi/3.14159265350/
       data rn/6371000./
       data bigg /6.6723e-11/
       data rhobar/5515.0/
-c
       fthird = 4.0d0/3.0d0
-c
+
 c     open frechet file and read header records 
 c     - beginning of loop over frechet files
-c
-  5   print*,' Enter name of input frechet file'
+5     print*,' Enter name of input frechet file'
+      call system_clock(count_rate=clock_rate)
+      call system_clock(start_time)
       read(*,'(a)')m_file 
       if (m_file .eq. ' ') then
         close(2)
         stop
       endif
-c
-c
-      print*,' Enter name of output file'
-      read(*,'(a)')b_file 
-      open(11,file=b_file) 
-c
+      call system_clock(end_time)
+      elapsed_time = real(end_time - start_time) / real(clock_rate)
+      print*, 'dT: ', elapsed_time, ' seconds. Spot A.1. Start reading Frechet file. '
+
+c     brb Load input Frechet file. 
+c     brb 11 is output file. 2 is input file. 
       index=2
       newvec = index*nknot_t + 6 + maxdisc
       nrec = newvec * 4 
       print*,'first nrec',nrec
 
-8     open(unit=2,file=m_file,form='unformatted',access='direct',
+ 8    open(unit=2,file=m_file,form='unformatted',access='direct',
      +      recl=nrec)
       read(2,rec=1) jcom,nmodes,nnmin,nnmax,llmin,llmax,ifanis,nrecw
       print*,'2nd nrec',nrecw
       if (nrec.ne.nrecw) then
-         close(2)
-         nrec = nrecw
-         go to 8
+        close(2)
+        nrec = nrecw
+        go to 8
       endif
       read(2,rec=2) ksave,nic,noc,ifanis,tref,scale,scale2,ndisc
       read(2,rec=3) (rad(i),i=1,ksave), (kntdsc (i), i = 1, ndisc)
@@ -169,11 +177,11 @@ c
         nextrec = 10
       else
         do i=1,ksave
-	  alphah(i)=0.
-	  betah(i)=0.
-	  eta(i)=0.
-	enddo  
-	nextrec = 7
+          alphah(i)=0.
+          betah(i)=0.
+          eta(i)=0.
+        enddo  
+        nextrec = 7
       end if 
       read(2,rec=nextrec) nb, (nm(ii), ii = 1, nb)
       print*,' reading branch structure: ', nb
@@ -186,7 +194,6 @@ c
       end do
       irec = irec+1
 
-c
       if(ifanis.eq.1) then
         if (jcom .eq. 2) then
           index = 3
@@ -205,9 +212,12 @@ c
       nocor = knot - noc
       print*, ' mode type = ',jcom,' lmin = ', llmin,' lmax = ', llmax
       print*, ' scalings: ', scale, scale2
+
+      call system_clock(end_time)
+      elapsed_time = real(end_time - start_time) / real(clock_rate)
+      print*, 'dT: ', elapsed_time, ' seconds. Spot A.1. Loaded stuff. '
 c
 c     set up integration parameters and constants
-c
       rad(knot+1)=0.0
       rad(1)=1.0
       if (jcom .eq. 2) then
@@ -222,12 +232,16 @@ c
       do j = 1, knot
         dr(j) = rad(ind + j + 1) - rad(ind + j)
       end do
-      print*, 'Discontinuities in the Frechet file (rad, depth):'
-      do i = 1, ndisc
-         print*, i, rad (kntdsc (i)) / 1000.0, 
-     &     6371.-0.001*rad (kntdsc (i))
-      end do
-      
+    !     print*, 'Discontinuities in the Frechet file (rad, depth):'
+    !     do i = 1, ndisc
+    !       print*, i, rad (kntdsc (i)) / 1000.0, 
+    !  &     6371.-0.001*rad (kntdsc (i))
+    !     end do
+
+      call system_clock(end_time)
+      elapsed_time = real(end_time - start_time) / real(clock_rate)
+      print*, 'dT: ', elapsed_time, ' seconds. Spot B.1. Integration constants.  '
+    
       k6 = 6*knot
       k5 = 5*knot
       k4=  4*knot
@@ -235,7 +249,7 @@ c
       k2 = 2*knot
       k1 = knot
       k0 = knot - 1
- 
+  
 ccc find all frequencies
 ccc find the mode closest to desired frequency
 ccc
@@ -252,127 +266,162 @@ c	enddo
 c      enddo  
 c      close(15)
 c      
-     
-      
       irecold=irec
       ib=1
 c JBR - begin edit - Remove check for too many modes
 C      if(nm(ib).gt.10000) stop 'nm(ib) too large!'
 c JBR - end edit
+c brb 2024/09/11 The following do i=... read(2... code can be slow if ran multiple times. 
+      call system_clock(end_time)
+      elapsed_time = real(end_time - start_time) / real(clock_rate)
+      print*, 'dT: ', elapsed_time, ' seconds. Spot B.1.a.  '
+
       do i=1,nm(ib)
-c       print*,'nm(ib)',nm(ib)
-c        print*,'irec',irec
         read(2,rec=irec,err=998) 
      &              nn,ll,w,qq,gv,cv,(buf(kk), kk = 1, kind)
         wsave(i)=w
-	nnsave(i)=nn
-	llsave(i)=ll
-	irecsave(i)=irec
-	irec=irec+1
-	write(6,*)w,nn,ll
+        nnsave(i)=nn
+        llsave(i)=ll
+        irecsave(i)=irec
+        irec=irec+1
       enddo
       irec=irecold
-      
-      write(6,"('Period of interest (s)?')")
-      read(5,*)period
-      vomega=2.*pi/period
-      imodefnd=0
-      diff=99999.
-      do i=1,nm(ib)
-        dd=abs(vomega-wsave(i))
-	if(dd.lt.diff)then
-	  diff=dd
-	  imodefnd=i
-	endif
-      enddo
-      p=2.*pi/wsave(imodefnd)
-      if(imodefnd.eq.0)then
-        stop 'did not find a close mode'
-      else
-        write(6,"('closest mode found: nn,ll,p ',2i6,f10.3)")
+
+      call system_clock(end_time)
+      elapsed_time = real(end_time - start_time) / real(clock_rate)
+      print*, 'dT: ', elapsed_time, ' seconds. Spot B.1.b. Done reading input Frechet file.  '
+
+
+c     brb 2024/09/11 Loop over each desired frequency, outputing the ASCII files. 
+      do
+        print*,' Enter name of output file, or enter end to stop. '
+        read(*,'(a)')b_file 
+
+c Debugging, can remove. 
+        print*,' Starting do while loop with b_file: '
+        print*, b_file
+
+c Exit loop over frequencies once "end" is entered. 
+        if (b_file .EQ. 'end') then
+          exit 
+        endif 
+        
+c Read desired period
+        write(6,"('Period of interest (s)?')")
+        read(5,*)period
+        vomega=2.*pi/period
+        imodefnd=0
+        diff=99999.
+        do i=1,nm(ib)
+          dd=abs(vomega-wsave(i))
+          if(dd.lt.diff)then
+            diff=dd
+            imodefnd=i
+          endif
+        enddo
+
+        p=2.*pi/wsave(imodefnd)
+        if(imodefnd.eq.0)then
+          stop 'did not find a close mode'
+        else
+          write(6,"('closest mode found: nn,ll,p ',2i6,f10.3)")
      &    nnsave(imodefnd),llsave(imodefnd),p
-      endif
+        endif
  
+        call system_clock(end_time)
+        elapsed_time = real(end_time - start_time) / real(clock_rate)
+        print*, 'dT: ', elapsed_time, ' seconds. Spot C. Starting integration(?)'
+
 c     loop over branch -- recall that gv frechet files are only for 1 branch
 cad changed end=998 to err=998 in read statement below
 cad seems to solve compilation problem
 
-      ib=1
-      do i=1,nm(ib)
-        read(2,rec=irec,err=998) 
+        ib=1
+        irec = irecold
+        open(11,file=b_file) 
+        do i=1,nm(ib)
+c brb 2024/09/11 It is dangerous to keep read(2,...) in the loop over periods, but it is working. It takes some time to read. On most machines, the file is stored in the cache, and reading is only slow the first time! If reading kernels becomes slow, then maybe this file is not stored in cache, and you will have to modify the code further. 
+          read(2,rec=irec,err=998) 
      &              nn,ll,w,qq,gv,cv,(buf(kk), kk = 1, kind)
 c
 c     integrate the kernels for the perturbation to eigenfrequency
 c
-        if(i.ne.imodefnd) goto 123
-	
-	do j = 1, knot
-          intg(j) = 0.0d0
-        end do
-        if (jcom .ne. 2) then
-          if(ifanis.eq.0) then
-            do j = 1, knot                         
-              intg(j) = buf(j)*drho(j) + buf(k1+j)*dbeta(j)
+          if(i.ne.imodefnd) goto 123
+    
+          do j = 1, knot
+            intg(j) = 0.0d0
+          end do
+          if (jcom .ne. 2) then
+            if(ifanis.eq.0) then
+              do j = 1, knot                         
+                intg(j) = buf(j)*drho(j) + buf(k1+j)*dbeta(j)
      &             + buf(k2+j)*dalpha(j)
-              
-	      vker(j,1)=buf(k1+j)
-	      vker(j,2)=buf(k2+j)
-	      vker(j,3)=buf(j)
-	      
-              kdscst=k3
-            end do
-          else
-            do j = 1, knot
-              intg(j) = buf(j)*drho(j) + buf(k1+j)*dbeta(j)
+            
+                vker(j,1)=buf(k1+j)
+                vker(j,2)=buf(k2+j)
+                vker(j,3)=buf(j)
+        
+                kdscst=k3
+              end do
+            else
+              do j = 1, knot
+                intg(j) = buf(j)*drho(j) + buf(k1+j)*dbeta(j)
      &             + buf(k2+j)*dalpha(j) + buf(k3+j)*dbetah(j)
      &             + buf(k4+j)*dalphah(j) + buf(k5+j)*deta(j)
 
-	      vker(j,1)=buf(k1+j)	      	      
-	      vker(j,2)=buf(k2+j)
-	      vker(j,3)=buf(k3+j)
-	      vker(j,4)=buf(k4+j)
-	      vker(j,5)=buf(k5+j)
-	      vker(j,6)=buf(j)	      
+                vker(j,1)=buf(k1+j)	      	      
+                vker(j,2)=buf(k2+j)
+                vker(j,3)=buf(k3+j)
+                vker(j,4)=buf(k4+j)
+                vker(j,5)=buf(k5+j)
+                vker(j,6)=buf(j)	      
 
-              kdscst=k6
-            end do
-          end if
-        else             
-          if(ifanis.eq.0) then
-            do j = 1, knot              
-              intg(j) = buf(j)*drho(ind+j) + buf(k1 + j)*dbeta(ind+j)
+                kdscst=k6
+              end do
+            end if  
+          else             
+            if(ifanis.eq.0) then
+              do j = 1, knot              
+                intg(j) = buf(j)*drho(ind+j) + buf(k1 + j)*dbeta(ind+j)
               
-	      vker(j,1)=buf(k1+j)
-	      vker(j,2)=buf(j)
-	      
-	      kdscst=k2
-            end do
-          else
-            do j = 1, knot
-              intg(j) = buf(j)*drho(ind+j) + buf(k1+j)*dbeta(ind+j)
+                vker(j,1)=buf(k1+j)
+                vker(j,2)=buf(j)
+        
+                kdscst=k2
+              end do
+            else
+              do j = 1, knot
+                intg(j) = buf(j)*drho(ind+j) + buf(k1+j)*dbeta(ind+j)
      &             + buf(k2+j)*dbetah(ind+j)
-     
-              vker(j,1)=buf(k1+j)
-	      vker(j,2)=buf(k2+j)
-	      vker(j,3)=buf(j)
-     
-              kdscst=k3
-            end do
+    
+                vker(j,1)=buf(k1+j)
+                vker(j,2)=buf(k2+j)
+                vker(j,3)=buf(j)
+    
+                kdscst=k3
+              end do
+            endif
           endif
-        endif
+
+          call system_clock(end_time)
+          elapsed_time = real(end_time - start_time) / real(clock_rate)
+          print*, 'dT: ', elapsed_time, ' seconds. Spot D. Finished integration(?)'
 c
 ccc write out
 ccc spheroidal, no aniso: 1=Vs,2=Vp,3=rho
 ccc spheroidal, aniso: 1=Vsv,2=Vpv,3=Vsh,4=Vph,5=eta,6=rho
 ccc toroidal, no aniso: 1=Vs,2=rho
 ccc toroidal, aniso: 1=Vsv,2=Vsh,3=rho
-        do j=1,knot
-	  write(11,"(7e15.5)")rad(j+ind),(0.5*scale*scale*vker(j,k),k=1,6)
-	enddo
-	close(11)
-	 
-	
-c                  
+          do j=1,knot
+            write(11,"(7e15.5)")rad(j+ind),(0.5*scale*scale*vker(j,k),
+     & k=1,6)
+          enddo
+          close(11)
+
+          call system_clock(end_time)
+          elapsed_time = real(end_time - start_time) / real(clock_rate)
+          print*, 'dT: ', elapsed_time, ' seconds. Spot E. Closed output file. ' 
+c 
 c        dw = 0.5d0*wdb*t*scale*scale
 c        w2 = wdb + dw
 c        T&D scaling suggests kernels here are factor of 4 smaller than T/D
@@ -384,16 +433,24 @@ cwrong!	dgv = 0.5*w*t*scale*scale
 cright!	dgv = 0.5*t*scale*scale
 c        gve = gv + dgv
 		
-
-123	irec=irec+1
+123	  write(6,*)
+      irec=irec+1
       end do 
-998   continue
-      close(11)
-      close(2)      
+998   write(6,*)'goto 998' 
+      continue
+   
 
 111   format(13e16.8)
       
-      end
+      end do
+
+      close(11)
+      close(2)   
+
+      end  
+
+
+
 c----------------------------------------------------
 c----------------------------------------------------
 c----------------------------------------------------
