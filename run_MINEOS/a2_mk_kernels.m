@@ -17,7 +17,7 @@
 % % sensitivity is targ{iperiod}.parameter(idepth), column vector
 % %%%
 
-tic 
+t1 = tic; 
 
 % clear; 
 close all;
@@ -70,8 +70,8 @@ if status ~= 0
     error( 'something is wrong at plot_wk. Log was: \n\n%s\n\n', log)
 end
 
-fprintf('tictoc the startup stuff\n')
-toc 
+fprintf('Time to get through a2_mk_kernels_startup %1.3f s\n', toc(t1) )
+t1 = tic; 
 
 %% run "frechet" to generate the frechet file 
 tic
@@ -95,8 +95,8 @@ com = ['cat run_frechet.',lower(TYPE),' | frechet > frechet.LOG'];
 if status ~= 0     
     error( 'something is wrong at frechet')
 end
-fprintf('tictoc run "frechet" to generate the frechet file \n')
-toc
+% fprintf('Time to get through run_frechet %1.3f s\n', toc(t1) )
+% t1 = tic; 
 
 %% run "frechet_cv" to generate the cv kernels
 tic
@@ -116,8 +116,8 @@ end
 if status ~= 0     
     error( 'something is wrong at frechet_c/gv')
 end
-fprintf('tictoc run "frechet_cv" to generate the cv kernels\n')
-toc
+% fprintf('Time to get through frechet_c %1.3f s\n', toc(t1) )
+% t1 = tic; 
 
 %% load CARD file (vmod)
 
@@ -156,9 +156,6 @@ vs = VSV/1000;
 vp = VPV/1000;
 r = 6371-R/1000;
 
-fprintf('tictoc load CARD file (vmod)\n')
-
-toc
 %% Convert CV Frechet kernels to ascii with phase-velocity sensitivity
 % Will do this for all periods of interest
 
@@ -369,11 +366,10 @@ elseif ( TYPE == 'T')
             
     end
 end
-fprintf('tictoc Convert CV Frechet kernels to ascii with phase-velocity sensitivity\n')
-toc(tslowpart)
+% fprintf('Time to get through Convert CV Frechet kernels to ascii with phase-velocity sensitivity %1.3f s\n', toc(t1) )
+% t1 = tic; 
 
 % Last section of a2
-tic
 FRECHETPATH = param.frechetpath;
 % delete(['run_plotwk.',lower(TYPE)],['run_frechcv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechcv_asc.',lower(TYPE)]);
 % delete(['run_plotwk.',lower(TYPE)],['run_frechgv.',lower(TYPE)],['run_frechet.',lower(TYPE)],['run_frechgv_asc.',lower(TYPE)]);
@@ -404,5 +400,6 @@ if is_deletefrech
         delete([param.frechetpath,'*.fgv.*'],[param.frechetpath,'*.frech'])
     end
 end
-fprintf('tictoc Last section of a2\n')
-toc
+
+fprintf('Time to get through a2_mk_kernels %1.3f s\n', toc(t1) )
+t1 = tic; 

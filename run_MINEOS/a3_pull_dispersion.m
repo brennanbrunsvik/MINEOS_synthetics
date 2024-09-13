@@ -10,6 +10,8 @@
 %
 % clear all;
 
+t_a3 = tic; 
+
 %%%% PARAMETERS %%%%
 bw = 0;        % print in black and white? (1=yes, 0=no)
 paus = 0;      % pause figure? (1=yes, 0=no)
@@ -179,3 +181,4 @@ end
 %print(fig_gv_v_cv,'-painters','-dpdf','-r400',[EIGPATH,CARDID,'.',TYPEID,'.',num2str(N_modes),'gv_v_cv.pdf']);
 
 
+fprintf('Time to get through a3_pull_discpersion: %1.3f s\n', toc(t_a3) )

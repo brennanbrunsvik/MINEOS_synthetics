@@ -213,9 +213,12 @@ c     brb 11 is output file. 2 is input file.
       print*, ' mode type = ',jcom,' lmin = ', llmin,' lmax = ', llmax
       print*, ' scalings: ', scale, scale2
 
-      call system_clock(end_time)
-      elapsed_time = real(end_time - start_time) / real(clock_rate)
-      print*, 'dT: ', elapsed_time, ' seconds. Spot A.1. Loaded stuff. '
+! c Check code speed
+!       call system_clock(end_time)
+!       elapsed_time = real(end_time - start_time) / real(clock_rate)
+!       print*, 'dT: ', elapsed_time, ' seconds. Spot A.1. Loaded stuff. '
+! c Check code speed
+
 c
 c     set up integration parameters and constants
       rad(knot+1)=0.0
@@ -238,9 +241,12 @@ c     set up integration parameters and constants
     !  &     6371.-0.001*rad (kntdsc (i))
     !     end do
 
-      call system_clock(end_time)
-      elapsed_time = real(end_time - start_time) / real(clock_rate)
-      print*, 'dT: ', elapsed_time, ' seconds. Spot B.1. Integration constants.  '
+! c Check code speed
+!       call system_clock(end_time)
+!       elapsed_time = real(end_time - start_time) / real(clock_rate)
+!       print*, 'dT: ', elapsed_time, ' seconds. Spot B.1. Integration constants.  '
+! c Check code speed
+
     
       k6 = 6*knot
       k5 = 5*knot
@@ -272,24 +278,31 @@ c JBR - begin edit - Remove check for too many modes
 C      if(nm(ib).gt.10000) stop 'nm(ib) too large!'
 c JBR - end edit
 c brb 2024/09/11 The following do i=... read(2... code can be slow if ran multiple times. 
-      call system_clock(end_time)
-      elapsed_time = real(end_time - start_time) / real(clock_rate)
-      print*, 'dT: ', elapsed_time, ' seconds. Spot B.1.a.  '
+
+! c Check code speed
+!       call system_clock(end_time)
+!       elapsed_time = real(end_time - start_time) / real(clock_rate)
+!       print*, 'dT: ', elapsed_time, ' seconds. Spot B.1.a.  '
+! c Check code speed
 
       do i=1,nm(ib)
         read(2,rec=irec,err=998) 
-     &              nn,ll,w,qq,gv,cv,(buf(kk), kk = 1, kind)
-        wsave(i)=w
+     &              nn,ll,w,qq,gv,cv
+c     &              nn,ll,w,qq,gv,cv,(buf(kk), kk = 1, kind)
+c brb2024/09/12 Above, I removed the buf array because we did not need to use it at this point in the code. Loading all of buf was somewhat time consuming and certainly unnecessary. 
         nnsave(i)=nn
         llsave(i)=ll
+        wsave(i)=w
         irecsave(i)=irec
         irec=irec+1
       enddo
       irec=irecold
 
-      call system_clock(end_time)
-      elapsed_time = real(end_time - start_time) / real(clock_rate)
-      print*, 'dT: ', elapsed_time, ' seconds. Spot B.1.b. Done reading input Frechet file.  '
+! c Check code speed
+!       call system_clock(end_time)
+!       elapsed_time = real(end_time - start_time) / real(clock_rate)
+!       print*, 'dT: ', elapsed_time, ' seconds. Spot B.1.b. Done reading input Frechet file.  '
+! c Check code speed
 
 
 c     brb 2024/09/11 Loop over each desired frequency, outputing the ASCII files. 
@@ -328,9 +341,11 @@ c Read desired period
      &    nnsave(imodefnd),llsave(imodefnd),p
         endif
  
-        call system_clock(end_time)
-        elapsed_time = real(end_time - start_time) / real(clock_rate)
-        print*, 'dT: ', elapsed_time, ' seconds. Spot C. Starting integration(?)'
+! c Check code speed
+!         call system_clock(end_time)
+!         elapsed_time = real(end_time - start_time) / real(clock_rate)
+!         print*, 'dT: ', elapsed_time, ' seconds. Spot C. Starting integration(?)'
+! c Check code speed
 
 c     loop over branch -- recall that gv frechet files are only for 1 branch
 cad changed end=998 to err=998 in read statement below
@@ -341,12 +356,17 @@ cad seems to solve compilation problem
         open(11,file=b_file) 
         do i=1,nm(ib)
 c brb 2024/09/11 It is dangerous to keep read(2,...) in the loop over periods, but it is working. It takes some time to read. On most machines, the file is stored in the cache, and reading is only slow the first time! If reading kernels becomes slow, then maybe this file is not stored in cache, and you will have to modify the code further. 
+          if(i.ne.imodefnd) goto 123
+
           read(2,rec=irec,err=998) 
      &              nn,ll,w,qq,gv,cv,(buf(kk), kk = 1, kind)
+
+c          nn=nnsave(i) 
+c          ll=llsave(i) 
+c          w=wsave(i) 
 c
 c     integrate the kernels for the perturbation to eigenfrequency
 c
-          if(i.ne.imodefnd) goto 123
     
           do j = 1, knot
             intg(j) = 0.0d0
@@ -403,9 +423,12 @@ c
             endif
           endif
 
-          call system_clock(end_time)
-          elapsed_time = real(end_time - start_time) / real(clock_rate)
-          print*, 'dT: ', elapsed_time, ' seconds. Spot D. Finished integration(?)'
+! c Check code speed
+!           call system_clock(end_time)
+!           elapsed_time = real(end_time - start_time) / real(clock_rate)
+!           print*, 'dT: ', elapsed_time, ' seconds. Spot D. Finished integration(?)'
+! c Check code speed
+          
 c
 ccc write out
 ccc spheroidal, no aniso: 1=Vs,2=Vp,3=rho
@@ -433,18 +456,16 @@ cwrong!	dgv = 0.5*w*t*scale*scale
 cright!	dgv = 0.5*t*scale*scale
 c        gve = gv + dgv
 		
-123	  write(6,*)
-      irec=irec+1
+123	  irec=irec+1
       end do 
 998   write(6,*)'goto 998' 
       continue
    
 
 111   format(13e16.8)
-      
-      end do
 
       close(11)
+      end do
       close(2)   
 
       end  

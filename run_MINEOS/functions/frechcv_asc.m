@@ -77,9 +77,11 @@ system(sprintf('chmod +x %s', runall));
 
 % Now actually execute the draw_frechet_gv script. Time it. It can get slow. 
 t1 = tic; 
-system(sprintf('./%s', runall))
-t2 = toc; 
-fprintf('Total time for executing draw_frechet_gv: %s', t2); 
+[status, cmdout] = system(sprintf('./%s', runall)); 
+t2 = toc(t1); 
+if t2 > 1; 
+    fprintf('Total time for executing draw_frechet_gv was slow: %s. Should usually be quite less than 1 s. \n', t2); 
+end
 
 %% Read ascii files into Matlab
 for ip = 1:length(periods); 

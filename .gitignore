@@ -16,3 +16,4 @@ figs
 *.asv
 .vscode*
 run_MINEOS/fort.2
+run_MINEOS/parameter_FRECHET_save.m

@@ -12,6 +12,8 @@
 
 % clear
 
+t_a1 = tic; 
+
 %% get pamameters information 
 parameter_FRECHET;
 CARD = param.CARD;
@@ -55,7 +57,6 @@ if SONLY
     if status ~= 0     
         error( 'something is wrong at mineos_nohang')
     end
-    toc
     
         TYPEID = param.STYPEID;
         com = ['cat ',CARDTABLE,param.CARDID,'.',TYPEID,'.asc > ',CARDTABLE,param.CARDID,'.',TYPEID,'_',num2str(num_loop),'.asc'];
@@ -81,7 +82,6 @@ if SONLY
         if status ~= 0     
             error( 'something is wrong at mineos_nohang')
         end
-        toc
         
         l_start_prev = l_start;
         l_start = check_mode(LOG,num_loop,l_start_prev); % Check that all eigenfrequencies were calcualted 
@@ -159,7 +159,6 @@ if TONLY
     if status ~= 0     
         error( 'something is wrong at mineos_nohang')
     end
-        toc
         
         TYPEID = param.TTYPEID;
         com = ['cat ',CARDTABLE,param.CARDID,'.',TYPEID,'.asc > ',CARDTABLE,param.CARDID,'.',TYPEID,'_',num2str(num_loop),'.asc'];
@@ -186,7 +185,6 @@ if TONLY
         if status ~= 0     
             error( 'something is wrong at mineos_nohang')
         end
-%         toc
         
         l_start_prev = l_start;
         l_start = check_mode(LOG,num_loop,l_start_prev); % Check that all eigenfrequencies were calcualted 
@@ -262,3 +260,4 @@ setenv('GFORTRAN_STDIN_UNIT', '-1')
 setenv('GFORTRAN_STDOUT_UNIT', '-1') 
 setenv('GFORTRAN_STDERR_UNIT', '-1')
 
+fprintf('Time to get through a1_run_mineos_check: %1.3f s\n', toc(t_a1) )

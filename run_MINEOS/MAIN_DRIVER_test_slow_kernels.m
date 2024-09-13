@@ -16,4 +16,4 @@ parameter_FRECHET_save(paramin, swperiods, many_plots);
 a2_mk_kernels
 
 % profile off; 
-% profile viewer
+% profile viewerc
