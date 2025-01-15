@@ -29,7 +29,7 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
     save_path_mineos_mat = [path2runMINEOS '/parameter_FRECHET_vals.mat']; 
 
     % Mineos table parameters
-    maxN = 400000; % Estimate of max number of modes 
+    maxN = 100000; % Estimate of max number of modes 
     N_modes = 1; 
     if isstruct(paramin) && all(isfield(paramin, {'R_or_L', 'fmin', 'fmax', 'lmin', 'lmax', 'ID', 'R_or_L'})); % If the MCMC input parameters were provided, then use those. 
         minF = paramin.fmin; 
@@ -44,7 +44,7 @@ function parameter_FRECHET_save(paramin, swperiods, many_plots)
         minF = 0;
         maxF = 200.05; % max frequency in mHz; %10.1; %250.05; %333.4; %500.05; %200.05; %%150.05; %50.05;
         minL = 0;
-        maxL = 50000;
+        maxL = 3500;
         N_modes = 1; % <0 uses all mode branches, 1=fundamental only -------- JOSH 8/22/15
         param.CARDID = 'synthmod'; % 'synthmod'; % 'prem_35'; %'fail_H01221_90L'; %'prem_35'; %'Nomelt_taper_aniso_constxicrman_etaPREM_constxilays'; %'pa5_5km';
         SONLY = 1; %Spheroidal modes? (RAYLEIGH) % (1 => yes, 0 => no)

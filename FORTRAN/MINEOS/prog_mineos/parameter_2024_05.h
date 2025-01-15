@@ -29,14 +29,14 @@ c
 c
 c     other parameters for mineos programs & idagrn
 c
-      parameter (nbranch = 2000)
+      parameter (nbranch = 4000)
       parameter (nbranch2 = 2*nbranch)
-      parameter (maxn = 2000)
-      parameter (maxl = 3500)
-      parameter (maxll = 7000)
+      parameter (maxn = 4000)
+      parameter (maxl = 50000)
+      parameter (maxll = 50000)
       parameter (maxold = maxn*maxll)
-      parameter (maxmodes = 100000)
-      parameter (maxmodes1 = 100001)
+      parameter (maxmodes = 400000)
+      parameter (maxmodes1 = 400001)
       
 c      parameter (maxn = 150)
 cc      parameter (maxl = 700)

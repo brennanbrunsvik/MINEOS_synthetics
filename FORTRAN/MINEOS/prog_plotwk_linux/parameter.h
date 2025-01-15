@@ -29,19 +29,14 @@ c
 c
 c     other parameters for mineos programs & idagrn
 c   these suffice for full tables up to 80 (s) or 120 (t).  l is set to handle fund mode only up to 200 mhz
-c      parameter (nbranch = 350)
       parameter (nbranch = 2000)
       parameter (nbranch2 = 2*nbranch)
       parameter (maxn = 2000)
-      parameter (maxl = 16000)
-      parameter (maxll = 16000)
+      parameter (maxl = 3500)
+      parameter (maxll = 7000)
       parameter (maxold = maxn*maxll)
-c      parameter (maxn = 350)
-c      parameter (maxl = 3500)
-c      parameter (maxll = 7000)
-c      parameter (maxold = maxn*maxl)
-      parameter (maxmodes = 200000)
-      parameter (maxmodes1 = 200001)
+      parameter (maxmodes = 100000)
+      parameter (maxmodes1 = 100001)
 c
 c     parameters for idagrn 
 c

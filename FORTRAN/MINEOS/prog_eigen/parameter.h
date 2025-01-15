@@ -32,11 +32,11 @@ c
       parameter (nbranch = 2000)
       parameter (nbranch2 = 2*nbranch)
       parameter (maxn = 2000)
-      parameter (maxl = 50000)
-      parameter (maxll = 50000)
+      parameter (maxl = 3500)
+      parameter (maxll = 7000)
       parameter (maxold = maxn*maxll)
-      parameter (maxmodes = 200000)
-      parameter (maxmodes1 = 200001)
+      parameter (maxmodes = 100000)
+      parameter (maxmodes1 = 100001)
 c
 c     parameters for idagrn 
 c

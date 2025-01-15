@@ -22,3 +22,5 @@ Must have installed
 
 ### For compiling fortran binaries, see [./FORTRAN/README](https://github.com/jbrussell/MINEOS_synthetics/blob/master/FORTRAN/README)
 
+# Brennan's notes: ~2024 
+- The attenuation reference frequency was hard coded into this version of Mineos. I changed it to 1 Hz (or 1000 mHz). 
